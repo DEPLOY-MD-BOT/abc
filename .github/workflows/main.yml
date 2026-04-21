@@ -1,0 +1,55 @@
+name: NEXT-LEVEL-BOT-OXYGEN
+
+on:
+  schedule:
+    - cron: "*/43 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  hyper-active-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 1. Fast Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 # වේගය වැඩි කිරීමට
+
+      - name: ⚡ 2. Vercel Pulse & Direct Ping
+        run: |
+          # ඔබේ Vercel URL එක පහතින් දමන්න (උදා: https://my-bot.vercel.app)
+          # මෙය මගින් Vercel එක Sleep වීම වහාම නතර කරයි
+          curl -Is https://your-vercel-project-url.vercel.app | head -n 1
+          echo "Vercel Pulse Sent!"
+
+      - name: 🔥 3. Turbo Commit Logic
+        run: |
+          mkdir -p system_health
+          # අහඹු අගයක් එකතු කිරීමෙන් සෑම විටම Commit එකක් සිදුවන බව සහතික කරයි
+          echo "Uptime-Token: $((1 + $RANDOM % 10000))" > system_health/live.txt
+          echo "Timestamp: $(date +'%Y-%m-%d %H:%M:%S')" >> system_health/live.txt
+
+      - name: 🛠️ 4. Professional Git Sync
+        run: |
+          git config --global user.name "thanuh-ai-engine"
+          git config --global user.email "bot-engine@actions.com"
+          git add system_health/live.txt
+          git commit -m "🚀 Boost: $(date +'%M')min cycle [skip ci]" || exit 0
+          git push
+
+      - name: 🔄 5. Infinite GitHub Loop (Anti-6-Hour)
+        env:
+          GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          # පැය 6න් නතර වීම වැලැක්වීමට බලහත්කාරයෙන් Workflow එක නැවත පණගැන්වීම
+          echo "Ensuring GitHub Persistence..."
+          gh workflow run next-level-bot-oxygen.yml
+          
+      - name: ✅ 6. Final Status
+        run: |
+          echo "Status: ULTRA FAST & ONLINE"
