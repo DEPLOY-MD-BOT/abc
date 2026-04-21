@@ -29,7 +29,7 @@ jobs:
         run: |
           # Vercel App එක Sleep නොවී තබා ගැනීමට Ping එකක් යවයි
           # මෙතනට ඔබේ Vercel URL එක අනිවාර්යයෙන්ම දාන්න
-          curl -Is https://abc-mu-ten.vercel.app/ | head -n 1
+          curl -Is https://abc-mu-ten.vercel.app | head -n 1
           echo "Vercel Pulse Sent Successfully!"
 
       - name: 🔥 3. Refresh System Files
