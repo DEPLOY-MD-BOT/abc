@@ -24,7 +24,7 @@ jobs:
         run: |
           # ඔබේ Vercel URL එක පහතින් දමන්න (උදා: https://my-bot.vercel.app)
           # මෙය මගින් Vercel එක Sleep වීම වහාම නතර කරයි
-          curl -Is https://vercel.com/deploy-md-bots-projects/abc | head -n 1
+          curl -Is https://abc-mu-ten.vercel.app/ | head -n 1
           echo "Vercel Pulse Sent!"
 
       - name: 🔥 3. Turbo Commit Logic
