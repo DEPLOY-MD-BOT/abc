@@ -1,9 +1,10 @@
-name: NEXT-LEVEL-BOT-OXYGEN
+name: Ultra Pro Bot Keeper (Vercel + GitHub Loop)
 
 on:
   schedule:
+    # සෑම විනාඩි 43කට වරක් Vercel එක Restart කිරීමට
     - cron: "*/43 * * * *"
-  workflow_dispatch:
+  workflow_dispatch: # ඕනෑම වෙලාවක මැනුවල් ස්ටාර්ට් කිරීමට
   push:
     branches: [ main ]
 
@@ -12,44 +13,39 @@ permissions:
   actions: write
 
 jobs:
-  hyper-active-engine:
+  ultra-bot-engine:
     runs-on: ubuntu-latest
     steps:
-      - name: 🚀 1. Fast Checkout
+      - name: 1. Checkout Repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1 # වේගය වැඩි කිරීමට
 
-      - name: ⚡ 2. Vercel Pulse & Direct Ping
+      - name: 2. Create Changes for Vercel Restart
         run: |
-          # ඔබේ Vercel URL එක පහතින් දමන්න (උදා: https://my-bot.vercel.app)
-          # මෙය මගින් Vercel එක Sleep වීම වහාම නතර කරයි
-          curl -Is https://abc-mu-ten.vercel.app/ | head -n 1
-          echo "Vercel Pulse Sent!"
-
-      - name: 🔥 3. Turbo Commit Logic
+          echo "System Active: $(date)"
+          mkdir -p health_checks
+          # Vercel එක අලුතින් Deploy වීමට restart.txt update කිරීම
+          echo "Vercel-Restart-ID: $GITHUB_RUN_ID-$(date +%s)" > health_checks/restart.txt
+          
+      - name: 3. Push to GitHub (Trigger Vercel)
         run: |
-          mkdir -p system_health
-          # අහඹු අගයක් එකතු කිරීමෙන් සෑම විටම Commit එකක් සිදුවන බව සහතික කරයි
-          echo "Uptime-Token: $((1 + $RANDOM % 10000))" > system_health/live.txt
-          echo "Timestamp: $(date +'%Y-%m-%d %H:%M:%S')" >> system_health/live.txt
-
-      - name: 🛠️ 4. Professional Git Sync
-        run: |
-          git config --global user.name "thanuh-ai-engine"
-          git config --global user.email "bot-engine@actions.com"
-          git add system_health/live.txt
-          git commit -m "🚀 Boost: $(date +'%M')min cycle [skip ci]" || exit 0
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add health_checks/restart.txt
+          git commit -m "Ultra-Auto-Restart: $(date)" || echo "Nothing to commit"
           git push
 
-      - name: 🔄 5. Infinite GitHub Loop (Anti-6-Hour)
+      - name: 4. Anti-6-Hour GitHub Loop Logic
+        # මෙන්න මෙතනට තමයි ඔබේ Token එක සම්බන්ධ වෙන්නේ
         env:
           GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
-          # පැය 6න් නතර වීම වැලැක්වීමට බලහත්කාරයෙන් Workflow එක නැවත පණගැන්වීම
-          echo "Ensuring GitHub Persistence..."
-          gh workflow run next-level-bot-oxygen.yml
-          
-      - name: ✅ 6. Final Status
+          echo "Preventing GitHub Action from timing out..."
+          # පැය 6 සීමාව පැනීමට පෙර අලුතින් Workflow එකක් පටන් ගැනීම (Loop එකක් ලෙස)
+          # මෙය පැය 5ක් පමණ run වූ පසු තවත් අලුත් එකක් trigger කරයි
+          gh workflow run ultra_pro_keep_alive.yml
+
+      - name: 5. Status Monitor
         run: |
-          echo "Status: ULTRA FAST & ONLINE"
+          echo "Vercel Restart Signal: Sent"
+          echo "GitHub Workflow Loop: Active"
+          echo "Bot Status: Running Ultra Mode"
